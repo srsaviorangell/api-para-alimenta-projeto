@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — São João de Irecê 2026</title>
+    <meta name="description" content="Painel administrativo do App Oficial São João de Irecê 2026" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/admin/css/styles.css" />
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="logo-icon">🎪</div>
+                <div class="logo-text">
+                    <span class="logo-title">São João</span>
+                    <span class="logo-sub">Irecê 2026 · Admin</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle" title="Fechar menu">&#9776;</button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-group">
+                <span class="nav-group-label">Principal</span>
+                <a href="#" class="nav-item active" data-page="dashboard" id="nav-dashboard">
+                    <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="events" id="nav-events">
+                    <span class="nav-icon">🎵</span><span class="nav-label">Eventos</span>
+                    <span class="nav-badge" id="badge-events">0</span>
+                </a>
+            </div>
+            <div class="nav-group">
+                <span class="nav-group-label">Mapa</span>
+                <a href="#" class="nav-item" data-page="venues" id="nav-venues">
+                    <span class="nav-icon">🍺</span><span class="nav-label">Barracas</span>
+                </a>
+                <a href="#" class="nav-item" data-page="mappoints" id="nav-mappoints">
+                    <span class="nav-icon">📍</span><span class="nav-label">Pontos de Apoio</span>
+                </a>
+            </div>
+            <div class="nav-group">
+                <span class="nav-group-label">Conteúdo</span>
+                <a href="#" class="nav-item" data-page="usefulinfo" id="nav-usefulinfo">
+                    <span class="nav-icon">ℹ️</span><span class="nav-label">Info Úteis</span>
+                </a>
+            </div>
+            <div class="nav-group">
+                <span class="nav-group-label">Dev</span>
+                <a href="#" class="nav-item" data-page="apiexplorer" id="nav-apiexplorer">
+                    <span class="nav-icon">🔌</span><span class="nav-label">API Explorer</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-api-status">
+                <span class="status-dot" id="statusDot"></span>
+                <span class="status-text" id="statusText">Verificando API...</span>
+            </div>
+            <a href="/api/health" target="_blank" class="sidebar-link-small">API Health</a>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-wrapper" id="mainWrapper">
+        <header class="topbar">
+            <button class="topbar-toggle" id="topbarToggle" title="Menu">&#9776;</button>
+            <div class="topbar-title" id="topbarTitle">Dashboard</div>
+            <div class="topbar-actions">
+                <span class="topbar-date">São João 2026 · Irecê, BA</span>
+            </div>
+        </header>
+
+        <main class="content" id="content">
+            <!-- Pages are injected here by JS -->
+            <div class="loading-screen">
+                <div class="spinner"></div>
+                <p>Carregando...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast-container"></div>
+
+    <!-- Confirm Modal -->
+    <div class="modal-overlay" id="confirmModal" style="display:none">
+        <div class="modal">
+            <div class="modal-icon" id="confirmIcon">⚠️</div>
+            <h3 class="modal-title" id="confirmTitle">Confirmar ação</h3>
+            <p class="modal-msg" id="confirmMsg">Tem certeza?</p>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" id="confirmCancel">Cancelar</button>
+                <button class="btn btn-danger" id="confirmOk">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/admin/js/api.js"></script>
+    <script src="/admin/js/components/toast.js"></script>
+    <script src="/admin/js/pages/dashboard.js"></script>
+    <script src="/admin/js/pages/events.js"></script>
+    <script src="/admin/js/pages/eventForm.js"></script>
+    <script src="/admin/js/pages/venues.js"></script>
+    <script src="/admin/js/pages/mapPoints.js"></script>
+    <script src="/admin/js/pages/usefulInfo.js"></script>
+    <script src="/admin/js/pages/apiExplorer.js"></script>
+    <script src="/admin/js/app.js"></script>
+</body>
+
+</html>
