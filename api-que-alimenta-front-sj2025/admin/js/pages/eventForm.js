@@ -35,15 +35,10 @@ async function renderEventForm(params = {}) {
           <div class="form-section">
             <div class="form-section-title">🎤 Identificação</div>
             <div class="form-grid">
-              <div class="form-group">
+              <div class="form-group form-full">
                 <label class="form-label">Artista / Atração <span class="req">*</span></label>
                 <input id="f-artist" class="form-input" type="text" value="${v('artist')}" placeholder="Ex: Wesley Safadão" required />
                 <span class="form-error" id="err-artist">Campo obrigatório.</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Título do Evento <span class="req">*</span></label>
-                <input id="f-title" class="form-input" type="text" value="${v('title')}" placeholder="Ex: Noite do Forró" required />
-                <span class="form-error" id="err-title">Campo obrigatório.</span>
               </div>
             </div>
           </div>
@@ -68,53 +63,33 @@ async function renderEventForm(params = {}) {
           </div>
 
           <div class="form-section">
-            <div class="form-section-title">📍 Local</div>
+            <div class="form-section-title">📍 Local & Estilo</div>
             <div class="form-grid">
               <div class="form-group">
-                <label class="form-label">Circuito <span class="req">*</span></label>
-                <input id="f-circuit" class="form-input" type="text" list="list-circuit" value="${v('circuit')}" placeholder="Ex: Praça, Centro..." required autocomplete="off" />
-                <datalist id="list-circuit">
-                  <option value="praca">🎪 Praça</option>
-                  <option value="centro">🏙️ Centro</option>
-                  <option value="litoranea">🌊 Litorânea</option>
-                </datalist>
-                <span class="form-error" id="err-circuit">Campo obrigatório.</span>
-              </div>
-              <div class="form-group">
                 <label class="form-label">Palco <span class="req">*</span></label>
-                <input id="f-stage" class="form-input" type="text" value="${v('stage')}" placeholder="Ex: Palco Principal" required />
+                <select id="f-stage" class="form-input" required>
+                  <option value="Palco Principal" ${v('stage') === 'Palco Principal' ? 'selected' : ''}>🎪 Palco Principal</option>
+                  <option value="Barracão Zé Bigode" ${v('stage') === 'Barracão Zé Bigode' ? 'selected' : ''}>🛖 Barracão Zé Bigode</option>
+                </select>
                 <span class="form-error" id="err-stage">Campo obrigatório.</span>
               </div>
               <div class="form-group">
-                <label class="form-label">Tipo <span class="req">*</span></label>
-                <input id="f-type" class="form-input" type="text" list="list-type" value="${v('type')}" placeholder="Ex: Forró, Sertanejo..." required autocomplete="off" />
+                <label class="form-label">Tipo / Estilo <span class="req">*</span></label>
+                <input id="f-type" class="form-input" type="text" list="list-type" value="${v('type')}" placeholder="Digite livremente (Ex: Forró, Sertanejo...)" required autocomplete="off" />
                 <datalist id="list-type">
                   <option value="forro">🎸 Forró</option>
                   <option value="sertanejo">🤠 Sertanejo</option>
                   <option value="gospel">⛪ Gospel</option>
                   <option value="infantil">🧸 Infantil</option>
-                  <option value="outros">🎭 Outros</option>
+                  <option value="arrocha">🕺 Arrocha</option>
                 </datalist>
                 <span class="form-error" id="err-type">Campo obrigatório.</span>
-              </div>
-              <div class="form-group form-full">
-                <label class="form-label">Endereço / Local Completo <span class="req">*</span></label>
-                <input id="f-location" class="form-input" type="text" value="${v('location')}" placeholder="Ex: Praça Humberto Souto, Irecê - BA" required />
-                <span class="form-error" id="err-location">Campo obrigatório.</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Latitude</label>
-                <input id="f-latitude" class="form-input" type="number" step="0.0001" value="${v('latitude')}" placeholder="-11.3038" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Longitude</label>
-                <input id="f-longitude" class="form-input" type="number" step="0.0001" value="${v('longitude')}" placeholder="-41.8549" />
               </div>
             </div>
           </div>
 
           <div class="form-section">
-            <div class="form-section-title">🎨 Aparência</div>
+            <div class="form-section-title">🎨 Aparência & Mídia</div>
             <div class="form-grid">
               <div class="form-group">
                 <label class="form-label">Cor do Card</label>
@@ -125,12 +100,29 @@ async function renderEventForm(params = {}) {
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-label">URL da Imagem</label>
+                <label class="form-label">Capa Principal (URL da Imagem)</label>
                 <input id="f-image_url" class="form-input" type="url" value="${v('image_url')}" placeholder="https://..." />
               </div>
             </div>
+            
             <div class="form-group" style="margin-top:1rem">
-              <label class="form-label">Imagem do Card (Upload)</label>
+              <label class="form-label">Galeria (Gifs / Imagens Adicionais)</label>
+              <div class="gallery-container" style="background: var(--bg-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                 <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem">Adicione pelo menos 4 URLs de mídias adicionais (GIFs ou Imagens) para o front-end.</p>
+                 <div id="gallery-inputs">
+                    ${(v('gallery') && v('gallery').length > 0 ? v('gallery') : ['', '', '', '']).map((url, idx) => `
+                        <div class="gallery-input-row" style="display:flex; gap:0.5rem; margin-bottom: 0.5rem">
+                            <input type="url" class="form-input gallery-url-field" value="${url}" placeholder="URL da mídia ${idx + 1}..." />
+                            <button type="button" class="btn btn-ghost danger" onclick="this.parentElement.remove()" tabindex="-1">✕</button>
+                        </div>
+                    `).join('')}
+                 </div>
+                 <button type="button" class="btn btn-ghost btn-sm" id="addGalleryItemBtn" style="margin-top: 0.5rem">+ Adicionar Mídia</button>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:1rem; border-top: 1px dashed var(--border); padding-top: 1rem;">
+              <label class="form-label">Upload de Capa (Opcional)</label>
               <div class="drop-zone" id="dropZone">
                 <input type="file" id="imageFileInput" accept="image/*" />
                 <div class="drop-zone-icon">📸</div>
@@ -162,12 +154,11 @@ async function renderEventForm(params = {}) {
       <div class="app-preview-wrap">
         <div class="app-preview-label">Preview no App</div>
         <div class="app-card-preview" id="cardPreview" style="background:linear-gradient(135deg,${v('card_color', '#7B2D8B')},#1a0030)">
-          <div class="card-artist" id="prev-artist">${v('artist', 'Artista')}</div>
-          <div class="card-title"  id="prev-title">${v('title', 'Título do Evento')}</div>
-          <div class="card-meta">
+          <div class="card-artist" id="prev-artist">${v('artist', 'Artista da Noite')}</div>
+          <div class="card-meta" style="margin-top: 8px">
             <span id="prev-date">${v('date') ? fmtDate(v('date')) : 'Data'}</span>
             <span id="prev-time">${v('start_time', '00:00')}${v('end_time') ? ' – ' + v('end_time') : ''}</span>
-            <span id="prev-stage">${v('stage', 'Palco')}</span>
+            <span id="prev-stage" style="display:block; margin-top:4px">${v('stage', 'Palco Principal')}</span>
           </div>
         </div>
         <div style="margin-top:1rem; padding:0.75rem; background:var(--bg-card); border-radius:var(--radius-sm); border:1px solid var(--border)">
@@ -185,7 +176,8 @@ async function renderEventForm(params = {}) {
   `;
 
   // ── Live Preview wiring ────────────────────────────────────
-  const liveFields = ['artist', 'title', 'start_time', 'end_time', 'stage'];
+  // ── Live Preview & Dynamic Fields wiring ────────────────────────────────────
+  const liveFields = ['artist', 'start_time', 'end_time', 'stage'];
   liveFields.forEach(f => {
     const el = document.getElementById(`f-${f}`);
     if (el) el.addEventListener('input', updatePreview);
@@ -194,13 +186,25 @@ async function renderEventForm(params = {}) {
 
   function updatePreview() {
     const c = v => document.getElementById(`f-${v}`)?.value || '';
-    document.getElementById('prev-artist').textContent = c('artist') || 'Artista';
-    document.getElementById('prev-title').textContent = c('title') || 'Título do Evento';
+    document.getElementById('prev-artist').textContent = c('artist') || 'Artista da Noite';
     document.getElementById('prev-date').textContent = c('date') ? fmtDate(c('date')) : 'Data';
     const st = c('start_time'), et = c('end_time');
     document.getElementById('prev-time').textContent = st ? `${st}${et ? ' – ' + et : ''}` : '00:00';
-    document.getElementById('prev-stage').textContent = c('stage') || 'Palco';
+    document.getElementById('prev-stage').textContent = c('stage') || 'Palco Principal';
   }
+
+  // Gallery dynamic inputs
+  document.getElementById('addGalleryItemBtn').addEventListener('click', () => {
+    const container = document.getElementById('gallery-inputs');
+    const div = document.createElement('div');
+    div.className = 'gallery-input-row';
+    div.style.cssText = 'display:flex; gap:0.5rem; margin-bottom: 0.5rem';
+    div.innerHTML = `
+          <input type="url" class="form-input gallery-url-field" placeholder="URL da mídia..." />
+          <button type="button" class="btn btn-ghost danger" onclick="this.parentElement.remove()" tabindex="-1">✕</button>
+      `;
+    container.appendChild(div);
+  });
 
   // Color picker sync
   const colorPicker = document.getElementById('f-card_color_picker');
@@ -248,21 +252,21 @@ async function renderEventForm(params = {}) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Salvando...';
 
+    const galleryUrls = Array.from(document.querySelectorAll('.gallery-url-field'))
+      .map(input => input.value.trim())
+      .filter(url => url !== '');
+
     const body = {
       artist: document.getElementById('f-artist').value.trim(),
-      title: document.getElementById('f-title').value.trim(),
       date: document.getElementById('f-date').value,
       start_time: document.getElementById('f-start_time').value,
       end_time: document.getElementById('f-end_time').value || null,
-      circuit: document.getElementById('f-circuit').value,
-      stage: document.getElementById('f-stage').value.trim(),
-      type: document.getElementById('f-type').value,
-      location: document.getElementById('f-location').value.trim(),
-      latitude: document.getElementById('f-latitude').value || null,
-      longitude: document.getElementById('f-longitude').value || null,
+      stage: document.getElementById('f-stage').value,
+      type: document.getElementById('f-type').value.trim(),
       description: document.getElementById('f-description').value.trim(),
       image_url: document.getElementById('f-image_url').value.trim(),
-      card_color: document.getElementById('f-card_color').value || '#7B2D8B'
+      card_color: document.getElementById('f-card_color').value || '#7B2D8B',
+      gallery: galleryUrls
     };
 
     try {

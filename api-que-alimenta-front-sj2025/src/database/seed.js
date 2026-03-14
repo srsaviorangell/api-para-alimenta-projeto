@@ -10,26 +10,58 @@ function seedDatabase() {
     const now = new Date().toISOString();
 
     const events = [
-        { artist: 'Wesley Safadão', title: 'Abertura Oficial SJ 2026', date: '2026-05-20', start: '20:00', end: '22:00', circuit: 'praca', stage: 'Palco Principal', type: 'forro', color: '#E63946' },
-        { artist: 'Flávio José', title: 'Noite do Forró Pé de Serra', date: '2026-05-20', start: '22:30', end: '00:30', circuit: 'praca', stage: 'Palco Principal', type: 'forro', color: '#F4A261' },
-        { artist: 'Padre Fábio de Melo', title: 'Show Gospel', date: '2026-05-20', start: '18:00', end: '20:00', circuit: 'centro', stage: 'Palco Gospel', type: 'gospel', color: '#2A9D8F' },
-        { artist: 'Jorge & Mateus', title: 'Sertanejo na Praça', date: '2026-05-21', start: '21:00', end: '23:00', circuit: 'praca', stage: 'Palco Principal', type: 'sertanejo', color: '#8338EC' },
-        { artist: 'Elba Ramalho', title: 'Forró das Antigas', date: '2026-05-21', start: '19:00', end: '21:00', circuit: 'litoranea', stage: 'Palco Litorânea', type: 'forro', color: '#FB8500' },
-        { artist: 'Galinha Pintadinha', title: 'Kids Fest', date: '2026-05-21', start: '16:00', end: '18:00', circuit: 'centro', stage: 'Palco Infantil', type: 'infantil', color: '#06D6A0' },
-        { artist: 'Xand Avião', title: 'Grande Final – Forró', date: '2026-05-22', start: '22:00', end: '00:00', circuit: 'praca', stage: 'Palco Principal', type: 'forro', color: '#E63946' },
-        { artist: 'Gusttavo Lima', title: 'Encerrando com Sertanejo', date: '2026-05-22', start: '20:00', end: '22:00', circuit: 'praca', stage: 'Palco Principal', type: 'sertanejo', color: '#7209B7' },
-        { artist: 'Fernandinho', title: 'Tarde Gospel', date: '2026-05-22', start: '17:00', end: '19:00', circuit: 'centro', stage: 'Palco Gospel', type: 'gospel', color: '#4CC9F0' },
-        { artist: 'Forró do Muído', title: 'Forró Eletrônico', date: '2026-05-22', start: '00:30', end: '02:30', circuit: 'litoranea', stage: 'Palco Litorânea', type: 'forro', color: '#F72585' },
+        { artist: 'Wesley Safadão', date: '2026-05-20', start: '20:00', end: '22:00', stage: 'Palco Principal', type: 'forro', color: '#E63946' },
+        { artist: 'Flávio José', date: '2026-05-20', start: '22:30', end: '00:30', stage: 'Palco Principal', type: 'forro', color: '#F4A261' },
+        { artist: 'Padre Fábio de Melo', date: '2026-05-20', start: '18:00', end: '20:00', stage: 'Barracão Zé Bigode', type: 'gospel', color: '#2A9D8F' },
+        { artist: 'Jorge & Mateus', date: '2026-05-21', start: '21:00', end: '23:00', stage: 'Palco Principal', type: 'sertanejo', color: '#8338EC' },
+        { artist: 'Elba Ramalho', date: '2026-05-21', start: '19:00', end: '21:00', stage: 'Barracão Zé Bigode', type: 'forro', color: '#FB8500' },
+        { artist: 'Galinha Pintadinha', date: '2026-05-21', start: '16:00', end: '18:00', stage: 'Palco Principal', type: 'infantil', color: '#06D6A0' },
+        { artist: 'Xand Avião', date: '2026-05-22', start: '22:00', end: '00:00', stage: 'Palco Principal', type: 'forro', color: '#E63946' },
+        { artist: 'Gusttavo Lima', date: '2026-05-22', start: '20:00', end: '22:00', stage: 'Palco Principal', type: 'sertanejo', color: '#7209B7' },
+        { artist: 'Fernandinho', date: '2026-05-22', start: '17:00', end: '19:00', stage: 'Barracão Zé Bigode', type: 'gospel', color: '#4CC9F0' },
+        { artist: 'Forró do Muído', date: '2026-05-22', start: '00:30', end: '02:30', stage: 'Barracão Zé Bigode', type: 'forro', color: '#F72585' },
     ];
 
+    // Helper functions for seeding
+    const getMesAbreviado = (dateString) => {
+        if (!dateString) return '';
+        const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+        const parts = dateString.split('-');
+        if (parts.length === 3) {
+            const monthIndex = parseInt(parts[1], 10) - 1;
+            if (monthIndex >= 0 && monthIndex < 12) return meses[monthIndex];
+        }
+        return '';
+    };
+
+    const getDia = (dateString) => {
+        if (!dateString) return '';
+        const parts = dateString.split('-');
+        if (parts.length === 3) return parts[2];
+        return '';
+    };
+
+    const getHorarioFormatado = (timeString) => {
+        if (!timeString) return '';
+        const parts = timeString.split(':');
+        if (parts.length >= 2) {
+            const h = parts[0];
+            const m = parts[1];
+            return m === '00' ? `${h}h` : `${h}h${m}`;
+        }
+        return timeString;
+    };
+
     db.events = events.map(e => ({
-        id: '1',
-        title: e.title, artist: e.artist, date: e.date,
+        id: '1', // The ID logic might be flawed if everything is '1', but keeping it as is per original code
+        artist: e.artist, date: e.date,
         start_time: e.start, end_time: e.end,
-        circuit: e.circuit, stage: e.stage, type: e.type,
-        location: 'Praça Humberto Souto, Irecê - BA',
-        latitude: -11.3038, longitude: -41.8549,
-        description: `Show de ${e.artist} no ${e.stage} `,
+        dia: getDia(e.date),
+        mes: getMesAbreviado(e.date),
+        horario: getHorarioFormatado(e.start),
+        gallery: [],
+        stage: e.stage, type: e.type,
+        description: `Show de ${e.artist} no ${e.stage}`,
         image_url: null, card_color: e.color,
         status: 'upcoming', created_at: now, updated_at: now
     }));

@@ -3,6 +3,36 @@ const router = express.Router();
 const { loadDB, saveDB, generateNumericId } = require('../database/db');
 const { upload, processAndSaveImage } = require('../middleware/upload');
 
+// Helpers for date and time formatting
+function getMesAbreviado(dateString) {
+    if (!dateString) return '';
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const parts = dateString.split('-');
+    if (parts.length === 3) {
+        const monthIndex = parseInt(parts[1], 10) - 1;
+        if (monthIndex >= 0 && monthIndex < 12) return meses[monthIndex];
+    }
+    return '';
+}
+
+function getDia(dateString) {
+    if (!dateString) return '';
+    const parts = dateString.split('-');
+    if (parts.length === 3) return parts[2];
+    return '';
+}
+
+function getHorarioFormatado(timeString) {
+    if (!timeString) return '';
+    const parts = timeString.split(':');
+    if (parts.length >= 2) {
+        const h = parts[0];
+        const m = parts[1];
+        return m === '00' ? `${h}h` : `${h}h${m}`;
+    }
+    return timeString;
+}
+
 // Helper: compute event status based on current datetime
 function computeStatus(date, startTime, endTime) {
     // If no date or no start time, can't determine — default to upcoming
@@ -18,32 +48,30 @@ function computeStatus(date, startTime, endTime) {
 }
 
 // Filter helpers
-function matchesFilters(event, { date, circuit, type, status, search }) {
+function matchesFilters(event, { date, type, status, search }) {
     if (date && event.date !== date) return false;
-    if (circuit && event.circuit !== circuit) return false;
     if (type && event.type !== type) return false;
     if (status && event.status !== status) return false;
     if (search) {
         const q = search.toLowerCase();
-        if (!event.title.toLowerCase().includes(q) &&
-            !event.artist.toLowerCase().includes(q) &&
+        if (!event.artist.toLowerCase().includes(q) &&
             !event.id.toLowerCase().includes(q)) return false;
     }
     return true;
 }
 
 function sortEvents(a, b) {
-    return a.date.localeCompare(b.date) || a.start_time.localeCompare(b.start_time);
+    return (a.date ? a.date.localeCompare(b.date) : 0) || (a.start_time ? a.start_time.localeCompare(b.start_time) : 0);
 }
 
 
 // GET /api/events
 router.get('/', (req, res) => {
-    const { date, circuit, type, status, search, page = 1, limit = 500 } = req.query;
+    const { date, type, status, search, page = 1, limit = 500 } = req.query;
     const db = loadDB();
     let events = db.events
         .map(e => ({ ...e, status: computeStatus(e.date, e.start_time, e.end_time) }))
-        .filter(e => matchesFilters(e, { date, circuit, type, status, search }))
+        .filter(e => matchesFilters(e, { date, type, status, search }))
         .sort(sortEvents);
     const total = events.length;
     const start = (parseInt(page) - 1) * parseInt(limit);
@@ -83,14 +111,22 @@ router.get('/:id', (req, res) => {
 
 // POST /api/events
 router.post('/', (req, res) => {
-    const { title, artist, date, start_time, end_time, circuit, stage, type, location, latitude, longitude, description, image_url, card_color } = req.body;
+    const { artist, date, start_time, end_time, stage, type, description, image_url, card_color, gallery } = req.body;
     const db = loadDB();
     const now = new Date().toISOString();
+
+    // Auto-calculate fields
+    const dia = getDia(date);
+    const mes = getMesAbreviado(date);
+    const horario = getHorarioFormatado(start_time);
+
+    // Default stage text as per new spec if invalid stage provided
+    const defaultStage = stage === 'Palco Principal' || stage === 'Barracão Zé Bigode' ? stage : 'Palco Principal';
+
     const newEvent = {
-        id: generateNumericId(db), title, artist, date, start_time, end_time: end_time || null,
-        circuit, stage, type, location,
-        latitude: latitude ? parseFloat(latitude) : null,
-        longitude: longitude ? parseFloat(longitude) : null,
+        id: generateNumericId(db), artist, date, start_time, end_time: end_time || null,
+        dia, mes, horario, gallery: Array.isArray(gallery) ? gallery : [],
+        stage: defaultStage, type,
         description: description || null, image_url: image_url || null,
         card_color: card_color || '#7B2D8B',
         status: computeStatus(date, start_time, end_time),
@@ -107,24 +143,36 @@ router.put('/:id', (req, res) => {
     const idx = db.events.findIndex(e => e.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: true, message: 'Evento não encontrado.' });
     const existing = db.events[idx];
-    const { title, artist, date, start_time, end_time, circuit, stage, type, location, latitude, longitude, description, image_url, card_color } = req.body;
-    const newDate = date || existing.date;
-    const newStart = start_time || existing.start_time;
+    const { artist, date, start_time, end_time, stage, type, description, image_url, card_color, gallery } = req.body;
+
+    const newDate = date !== undefined ? date : existing.date;
+    const newStart = start_time !== undefined ? start_time : existing.start_time;
     const newEnd = end_time !== undefined ? end_time : existing.end_time;
     if (newEnd && newStart && newEnd <= newStart) {
         // Soft — just warn in response but still save
     }
+
+    // Auto-calculate fields based on updated date/time
+    const dia = getDia(newDate);
+    const mes = getMesAbreviado(newDate);
+    const horario = getHorarioFormatado(newStart);
+
+    let defaultStage = stage !== undefined ? stage : existing.stage;
+    if (defaultStage !== 'Palco Principal' && defaultStage !== 'Barracão Zé Bigode') {
+        defaultStage = 'Palco Principal';
+    }
+
     const updated = {
         ...existing,
-        title: title || existing.title, artist: artist || existing.artist,
+        artist: artist !== undefined ? artist : existing.artist,
         date: newDate, start_time: newStart, end_time: newEnd || null,
-        circuit: circuit || existing.circuit, stage: stage || existing.stage,
-        type: type || existing.type, location: location || existing.location,
-        latitude: latitude != null ? parseFloat(latitude) : existing.latitude,
-        longitude: longitude != null ? parseFloat(longitude) : existing.longitude,
+        dia, mes, horario,
+        gallery: Array.isArray(gallery) ? gallery : existing.gallery || [],
+        stage: defaultStage,
+        type: type !== undefined ? type : existing.type,
         description: description !== undefined ? description : existing.description,
         image_url: image_url !== undefined ? image_url : existing.image_url,
-        card_color: card_color || existing.card_color,
+        card_color: card_color !== undefined ? card_color : existing.card_color,
         status: computeStatus(newDate, newStart, newEnd),
         updated_at: new Date().toISOString()
     };
@@ -149,7 +197,13 @@ router.post('/:id/duplicate', (req, res) => {
     const original = db.events.find(e => e.id === req.params.id);
     if (!original) return res.status(404).json({ error: true, message: 'Evento não encontrado.' });
     const now = new Date().toISOString();
-    const dup = { ...original, id: generateNumericId(db), title: `${original.title} (Cópia)`, status: 'upcoming', image_url: null, created_at: now, updated_at: now };
+
+    // Auto-calculate fields (even though they should already exist, it's safer)
+    const dia = getDia(original.date);
+    const mes = getMesAbreviado(original.date);
+    const horario = getHorarioFormatado(original.start_time);
+
+    const dup = { ...original, id: generateNumericId(db), artist: `${original.artist} (Cópia)`, dia, mes, horario, gallery: original.gallery || [], status: 'upcoming', image_url: null, created_at: now, updated_at: now };
     db.events.push(dup);
     saveDB(db);
     res.status(201).json({ data: dup });

@@ -8,12 +8,11 @@ async function renderEvents() {
   const content = document.getElementById('content');
   content.innerHTML = `<div class="loading-screen"><div class="spinner"></div><p>Carregando...</p></div>`;
 
-  let filters = { search: '', circuit: '', type: '', date: '' };
+  let filters = { search: '', type: '', date: '' };
   let allEvents = [];
 
   async function loadEvents() {
     const params = new URLSearchParams({ limit: 500 });
-    if (filters.circuit) params.set('circuit', filters.circuit);
     if (filters.type) params.set('type', filters.type);
     if (filters.date) params.set('date', filters.date);
     if (filters.search) params.set('search', filters.search);
@@ -28,24 +27,23 @@ async function renderEvents() {
     const tbody = document.getElementById('events-tbody');
     if (!tbody) return;
     if (!allEvents.length) {
-      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">🎵</div><div class="empty-title">Nenhum evento encontrado</div></div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🎵</div><div class="empty-title">Nenhum evento encontrado</div></div></td></tr>`;
       return;
     }
     tbody.innerHTML = allEvents.map(e => `
       <tr>
         <td class="td-mono">${e.id.substring(0, 8)}…</td>
         <td class="td-bold">${e.artist}</td>
-        <td>${e.title}</td>
         <td>${fmtDate(e.date)}</td>
         <td>${e.start_time}${e.end_time ? `<br><small style="color:var(--text-muted)">→ ${e.end_time}</small>` : ''}</td>
-        <td><span class="badge badge-${e.circuit}">${circuitLabels[e.circuit] || e.circuit}</span></td>
-        <td><span class="badge badge-${e.type}">${typeLabels[e.type] || e.type}</span></td>
+        <td><span class="badge badge-normal">${e.stage}</span></td>
+        <td><span class="badge badge-outline">${e.type}</span></td>
         <td><span class="badge badge-${e.status}">${statusLabels[e.status] || e.status}</span></td>
         <td>
           <div class="actions-row">
             <button class="btn-icon success" title="Editar" onclick="Router.go('event-form',{id:'${e.id}'})">✏️</button>
             <button class="btn-icon" title="Duplicar" onclick="duplicateEvent('${e.id}')">📋</button>
-            <button class="btn-icon danger" title="Excluir" onclick="deleteEvent('${e.id}','${e.artist} – ${e.title.replace(/'/g, "'")}')">🗑️</button>
+            <button class="btn-icon danger" title="Excluir" onclick="deleteEvent('${e.id}','${e.artist.replace(/'/g, "\\'")}')">🗑️</button>
           </div>
         </td>
       </tr>
@@ -69,21 +67,15 @@ async function renderEvents() {
 
       <div class="filter-bar">
         <div class="search-wrap">
-          <input id="search-input" class="form-input" placeholder="Buscar por artista, título ou ID..." value="${filters.search}" />
+          <input id="search-input" class="form-input" placeholder="Buscar por artista ou ID..." value="${filters.search}" />
         </div>
-        <select id="filter-circuit" class="form-input">
-          <option value="">Todos os Circuitos</option>
-          <option value="praca">Praça</option>
-          <option value="centro">Centro</option>
-          <option value="litoranea">Litorânea</option>
-        </select>
         <select id="filter-type" class="form-input">
-          <option value="">Todos os Tipos</option>
+          <option value="">Todos os Tipos/Estilos</option>
           <option value="forro">Forró</option>
           <option value="sertanejo">Sertanejo</option>
           <option value="gospel">Gospel</option>
           <option value="infantil">Infantil</option>
-          <option value="outros">Outros</option>
+          <option value="arrocha">Arrocha</option>
         </select>
         <input id="filter-date" class="form-input" type="date" style="min-width:160px" title="Filtrar por data" />
         <button class="btn btn-ghost btn-sm" id="clear-filters">✕ Limpar</button>
@@ -93,8 +85,8 @@ async function renderEvents() {
         <table>
           <thead>
             <tr>
-              <th>ID</th><th>Artista</th><th>Título</th><th>Data</th>
-              <th>Horário</th><th>Circuito</th><th>Tipo</th><th>Status</th><th>Ações</th>
+              <th>ID</th><th>Artista</th><th>Data</th>
+              <th>Horário</th><th>Palco</th><th>Tipo</th><th>Status</th><th>Ações</th>
             </tr>
           </thead>
           <tbody id="events-tbody"></tbody>
@@ -114,7 +106,7 @@ async function renderEvents() {
       }, 350);
     });
 
-    ['filter-circuit', 'filter-type', 'filter-date'].forEach(id => {
+    ['filter-type', 'filter-date'].forEach(id => {
       document.getElementById(id).addEventListener('change', async e => {
         const key = id.replace('filter-', '');
         filters[key] = e.target.value;
@@ -123,9 +115,8 @@ async function renderEvents() {
     });
 
     document.getElementById('clear-filters').addEventListener('click', async () => {
-      filters = { search: '', circuit: '', type: '', date: '' };
+      filters = { search: '', type: '', date: '' };
       document.getElementById('search-input').value = '';
-      document.getElementById('filter-circuit').value = '';
       document.getElementById('filter-type').value = '';
       document.getElementById('filter-date').value = '';
       await loadEvents(); renderTable();
