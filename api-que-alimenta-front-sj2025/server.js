@@ -9,6 +9,7 @@ const errorHandler = require('./src/middleware/errorHandler');
 
 const eventsRouter = require('./src/routes/events');
 const venuesRouter = require('./src/routes/venues');
+const stagesRouter = require('./src/routes/stages');
 const mapPointsRouter = require('./src/routes/mapPoints');
 const usefulInfoRouter = require('./src/routes/usefulInfo');
 
@@ -27,6 +28,7 @@ app.use('/admin', express.static(path.join(__dirname, 'admin')));
 // ── API Routes ─────────────────────────────────────────────────
 app.use('/api/events', eventsRouter);
 app.use('/api/venues', venuesRouter);
+app.use('/api/stages', stagesRouter);
 app.use('/api/map-points', mapPointsRouter);
 app.use('/api/useful-info', usefulInfoRouter);
 

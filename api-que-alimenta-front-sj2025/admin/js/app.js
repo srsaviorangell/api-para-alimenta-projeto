@@ -8,6 +8,7 @@ const Router = (() => {
         events: () => renderEvents(),
         'event-form': (p) => renderEventForm(p),
         venues: () => renderVenues(),
+        stages: () => renderStages(),
         mappoints: () => renderMapPoints(),
         usefulinfo: () => renderUsefulInfo(),
         apiexplorer: () => renderApiExplorer(),
@@ -120,13 +121,34 @@ async function updateEventsBadge() {
     } catch { }
 }
 
+// ── Update stages badge ─────────────────────────────────────
+async function updateStagesBadge() {
+    try {
+        const res = await api.get('/stages');
+        const badge = document.getElementById('badge-stages');
+        if (badge) badge.textContent = (res.data || []).length;
+    } catch { }
+}
+
 // ── Boot ────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
+window._bootApp = async function () {
     setupSidebar();
     setupNav();
     await checkApiHealth();
     await updateEventsBadge();
+    await updateStagesBadge();
     Router.go('dashboard');
-
     setInterval(checkApiHealth, 30000);
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    Auth.setupLogin();
+
+    if (Auth.isAuthenticated()) {
+        // Sessão já ativa — inicializa direto
+        window._bootApp();
+    } else {
+        // Esconde o app e exibe o login
+        Auth.showLogin();
+    }
 });

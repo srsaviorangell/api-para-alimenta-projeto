@@ -24,7 +24,7 @@ function saveDB(data) {
 function generateNumericId(db) {
     let maxId = 0;
     // Check all main collections for the highest numeric ID
-    ['events', 'venues', 'map_points', 'useful_info'].forEach(coll => {
+    ['events', 'venues', 'stages', 'map_points', 'useful_info'].forEach(coll => {
         if (Array.isArray(db[coll])) {
             db[coll].forEach(item => {
                 const num = parseInt(item.id, 10);

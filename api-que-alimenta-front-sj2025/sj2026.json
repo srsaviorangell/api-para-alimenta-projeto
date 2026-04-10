@@ -1,80 +1,66 @@
 {
   "events": [
     {
-      "id": "6",
-      "artist": "Xand Avião",
-      "date": "2026-05-22",
-      "start_time": "22:00",
-      "end_time": "00:00",
+      "id": "25",
+      "artist": "ana castela",
+      "date": "2025-06-19",
+      "start_time": "",
+      "end_time": null,
+      "dia": "19",
+      "mes": "Jun",
+      "horario": "",
+      "gallery": [],
       "stage": "Palco Principal",
-      "type": "forro",
-      "description": "Show de Xand Avião no Palco Principal",
-      "image_url": "",
-      "card_color": "#E63946",
+      "type": "",
+      "description": null,
+      "image_url": null,
+      "card_color": "#7B2D8B",
       "status": "upcoming",
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-03-14T00:45:37.217Z",
-      "dia": "22",
-      "mes": "Mai",
-      "horario": "22h",
-      "gallery": [
-        "https://images.unsplash.com/photo-1767376133639-d76d3189a1f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhY291c3RpYyUyMGd1aXRhciUyMHBlcmZvcm1hbmNlfGVufDF8fHx8MTc3MTU0MDU3MHww&ixlib=rb-4.1.0&q=80&w=1080",
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-        "https://images.unsplash.com/photo-1767376133639-d76d3189a1f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhY291c3RpYyUyMGd1aXRhciUyMHBlcmZvcm1hbmNlfGVufDF8fHx8MTc3MTU0MDU3MHww&ixlib=rb-4.1.0&q=80&w=1080",
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080"
-      ]
+      "created_at": "2026-04-10T03:38:21.669Z",
+      "updated_at": "2026-04-10T03:38:21.669Z"
     },
     {
-      "id": "7",
-      "artist": "Gusttavo Lima",
-      "date": "2026-05-22",
-      "start_time": "20:00",
-      "end_time": "22:00",
-      "stage": "Palco Principal",
-      "type": "sertanejo",
-      "description": "Show de Gusttavo Lima no Palco Principal",
-      "image_url": "",
-      "card_color": "#7209B7",
-      "status": "upcoming",
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-03-14T00:45:32.761Z",
-      "dia": "22",
-      "mes": "Mai",
-      "horario": "20h",
-      "gallery": [
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080"
-      ]
-    },
-    {
-      "id": "10",
-      "artist": "Wesley Safadão",
-      "date": "2026-05-20",
-      "start_time": "20:00",
-      "end_time": "22:00",
-      "stage": "Palco Principal",
-      "type": "forro",
-      "description": "Show de Wesley Safadão no Palco Principal",
-      "image_url": "",
-      "card_color": "#E63946",
-      "status": "upcoming",
-      "created_at": "2026-02-19T22:20:57.854Z",
-      "updated_at": "2026-03-14T00:45:25.040Z",
+      "id": "26",
+      "artist": "rey vaqueiro",
+      "date": "2026-06-20",
+      "start_time": "",
+      "end_time": null,
       "dia": "20",
-      "mes": "Mai",
-      "horario": "20h",
-      "gallery": [
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-        "https://images.unsplash.com/photo-1758816011831-d5d17ae7e44e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JyJUMzJUIzJTIwYWNjb3JkaW9uJTIwZGFuY2V8ZW58MXx8fHwxNzcxNTQwNTY5fDA&ixlib=rb-4.1.0&q=80&w=1080"
-      ]
+      "mes": "Jun",
+      "horario": "",
+      "gallery": [],
+      "stage": "Palco Principal",
+      "type": "",
+      "description": null,
+      "image_url": null,
+      "card_color": "#7B2D8B",
+      "status": "upcoming",
+      "created_at": "2026-04-10T03:39:33.353Z",
+      "updated_at": "2026-04-10T03:39:33.353Z"
+    },
+    {
+      "id": "27",
+      "artist": "ze vaiqueiro",
+      "date": "2026-06-21",
+      "start_time": "",
+      "end_time": null,
+      "dia": "21",
+      "mes": "Jun",
+      "horario": "",
+      "gallery": [],
+      "stage": "Palco Principal",
+      "type": "",
+      "description": null,
+      "image_url": null,
+      "card_color": "#7B2D8B",
+      "status": "upcoming",
+      "created_at": "2026-04-10T03:39:50.227Z",
+      "updated_at": "2026-04-10T03:39:50.227Z"
     }
   ],
   "venues": [
     {
-      "id": "13",
+      "id": "1",
       "name": "Barraca do Zé",
       "type": "comida",
       "latitude": -11.304,
@@ -84,11 +70,25 @@
       "horario": "17h-02h",
       "patrocinado": false,
       "description": "Comida típica nordestina",
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-02-19T22:16:51.586Z"
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
     },
     {
-      "id": "14",
+      "id": "2",
+      "name": "Bar da Festa",
+      "type": "bebida",
+      "latitude": -11.3035,
+      "longitude": -41.8545,
+      "address": "Av. Principal, 50",
+      "phone": "(74) 99999-0002",
+      "horario": "18h-03h",
+      "patrocinado": true,
+      "description": "Coquetéis e cervejas geladas",
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
+    },
+    {
+      "id": "3",
       "name": "Restaurante São João",
       "type": "restaurante",
       "latitude": -11.3042,
@@ -98,13 +98,13 @@
       "horario": "12h-23h",
       "patrocinado": false,
       "description": "Buffet completo a R$35,90",
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-02-19T22:16:51.586Z"
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
     }
   ],
   "map_points": [
     {
-      "id": "a6741f61-97b4-4f7e-9ca2-c9e8f96d05db",
+      "id": "1",
       "name": "UPA Central",
       "category": "saude",
       "latitude": -11.305,
@@ -112,11 +112,23 @@
       "address": "Rua da Saúde, 100",
       "phone": "192",
       "opening_hours": "24h",
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-02-19T22:16:51.586Z"
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
     },
     {
-      "id": "27a6d64d-4bc0-455c-9b79-7abbde8874bc",
+      "id": "2",
+      "name": "Posto da PM",
+      "category": "seguranca",
+      "latitude": -11.3038,
+      "longitude": -41.8549,
+      "address": "Praça Humberto Souto",
+      "phone": "190",
+      "opening_hours": "24h",
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
+    },
+    {
+      "id": "3",
       "name": "Banheiros Módulo A",
       "category": "banheiro",
       "latitude": -11.3036,
@@ -124,11 +136,11 @@
       "address": "Área do Palco Principal",
       "phone": null,
       "opening_hours": "17h-03h",
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-02-19T22:16:51.586Z"
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
     },
     {
-      "id": "4d135b00-8194-44ae-9df9-f3d20b138dfb",
+      "id": "4",
       "name": "Palco Principal",
       "category": "palco",
       "latitude": -11.3038,
@@ -136,52 +148,124 @@
       "address": "Praça Humberto Souto",
       "phone": null,
       "opening_hours": "18h-02h",
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-02-19T22:16:51.586Z"
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
     }
   ],
   "useful_info": [
     {
-      "id": "6eb58ba4-cfc4-4710-b5a8-44f7dc95161d",
+      "id": "1",
       "category": "saude",
       "title": "Pronto-Socorro",
       "content": "UPA Central, Rua da Saúde, 100. Atendimento 24h durante o evento.",
       "phone": "192",
       "icon_name": "medical-bag",
       "order_index": 1,
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-02-19T22:16:51.586Z"
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
     },
     {
-      "id": "dbecdb89-cf5e-4dfe-9d71-62e12dead3ad",
+      "id": "2",
       "category": "seguranca",
       "title": "Polícia Militar",
       "content": "Posto avançado na Praça Humberto Souto. Em caso de emergência ligue 190.",
       "phone": "190",
       "icon_name": "shield",
       "order_index": 2,
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-02-19T22:16:51.586Z"
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
     },
     {
-      "id": "79ff39f7-b04c-43b7-97bf-e7f9e1c7ca17",
+      "id": "3",
       "category": "regras",
       "title": "Itens Proibidos",
       "content": "Não é permitido entrar com: bebidas alcoólicas em garrafas de vidro, fogos de artifício, armas brancas.",
       "phone": null,
       "icon_name": "alert-circle",
       "order_index": 3,
-      "created_at": "2026-02-19T22:16:51.586Z",
-      "updated_at": "2026-02-19T22:16:51.586Z"
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
     },
     {
-      "id": "63c4fd31-cd18-44c6-84c6-86563abc97ab",
+      "id": "4",
       "category": "acessibilidade",
       "title": "Acessibilidade",
       "content": "Rampas de acesso, banheiros adaptados e área reservada para cadeirantes ao lado do palco.",
       "phone": null,
       "icon_name": "wheelchair",
       "order_index": 4,
+      "created_at": "2026-04-10T03:38:03.431Z",
+      "updated_at": "2026-04-10T03:38:03.431Z"
+    }
+  ],
+  "stages": [
+    {
+      "id": "20",
+      "name": "Palco Principal",
+      "type": "🎤 Palco",
+      "location": "Praça Humberto Souto",
+      "capacity": 15000,
+      "description": "Palco central do São João de Irecê 2026, com estrutura de última geração, telão LED e som de alta potência.",
+      "latitude": -11.3038,
+      "longitude": -41.8549,
+      "maps_url": "https://maps.google.com/?q=-11.3038,-41.8549",
+      "main": true,
+      "created_at": "2026-02-19T22:16:51.586Z",
+      "updated_at": "2026-02-19T22:16:51.586Z"
+    },
+    {
+      "id": "21",
+      "name": "Palco Forró Roots",
+      "type": "🎤 Palco",
+      "location": "Rua da Cultura, s/n",
+      "capacity": 5000,
+      "description": "Palco dedicado às bandas de forró pé-de-serra e música tradicional nordestina.",
+      "latitude": -11.3045,
+      "longitude": -41.856,
+      "maps_url": "https://maps.google.com/?q=-11.3045,-41.856",
+      "main": false,
+      "created_at": "2026-02-19T22:16:51.586Z",
+      "updated_at": "2026-02-19T22:16:51.586Z"
+    },
+    {
+      "id": "22",
+      "name": "Palco Revelações",
+      "type": "🎤 Palco",
+      "location": "Av. Boa Vista, 300",
+      "capacity": 3000,
+      "description": "Espaço dedicado a artistas locais e regionais, valorizando os talentos do São João de Irecê.",
+      "latitude": -11.302,
+      "longitude": -41.853,
+      "maps_url": "https://maps.google.com/?q=-11.302,-41.853",
+      "main": false,
+      "created_at": "2026-02-19T22:16:51.586Z",
+      "updated_at": "2026-02-19T22:16:51.586Z"
+    },
+    {
+      "id": "23",
+      "name": "Praça de Alimentação",
+      "type": "🛍️ Área Comercial",
+      "location": "Rua das Palmeiras, s/n",
+      "capacity": null,
+      "description": "Área central com barracas de comida, bebidas e artesanato regional.",
+      "latitude": -11.3041,
+      "longitude": -41.8552,
+      "maps_url": "https://maps.google.com/?q=-11.3041,-41.8552",
+      "main": false,
+      "created_at": "2026-02-19T22:16:51.586Z",
+      "updated_at": "2026-02-19T22:16:51.586Z"
+    },
+    {
+      "id": "24",
+      "name": "Entrada Principal",
+      "type": "🚪 Entrada",
+      "location": "Av. Rio Branco – Portão Norte",
+      "capacity": null,
+      "description": "Entrada principal do evento com detecção de armas, revista e informações gerais.",
+      "latitude": -11.3032,
+      "longitude": -41.8545,
+      "maps_url": "https://maps.google.com/?q=-11.3032,-41.8545",
+      "main": false,
       "created_at": "2026-02-19T22:16:51.586Z",
       "updated_at": "2026-02-19T22:16:51.586Z"
     }
