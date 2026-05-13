@@ -1,15 +1,14 @@
-const { loadDB, saveDB } = require('./db');
-const { v4: uuidv4 } = require('uuid');
+const { getDB } = require('./db');
 
-function runMigrations() {
-    const db = loadDB();
-    // Ensure all tables exist
-    if (!db.events) db.events = [];
-    if (!db.venues) db.venues = [];
-    if (!db.map_points) db.map_points = [];
-    if (!db.useful_info) db.useful_info = [];
-    saveDB(db);
-    console.log('✅ DB inicializado com sucesso.');
+async function runMigrations() {
+    const db = await getDB();
+    // Garante que todas as coleções existam (MongoDB as cria automaticamente, mas
+    // chamar listCollections é uma boa forma de validar a conexão)
+    const collections = ['events', 'venues', 'stages', 'map_points', 'useful_info'];
+    for (const name of collections) {
+        await db.collection(name).createIndex({ id: 1 }, { unique: true, sparse: true }).catch(() => {});
+    }
+    console.log('✅ DB inicializado com sucesso (MongoDB Atlas).');
 }
 
 module.exports = { runMigrations };

@@ -1,54 +1,90 @@
 const express = require('express');
 const router = express.Router();
-const { loadDB, saveDB, generateNumericId } = require('../database/db');
+const { getDB, generateNumericId } = require('../database/db');
 
-router.get('/', (req, res) => {
-    const { category, search } = req.query;
-    const db = loadDB();
-    let pts = db.map_points;
-    if (category) pts = pts.filter(p => p.category === category);
-    if (search) { const q = search.toLowerCase(); pts = pts.filter(p => p.name.toLowerCase().includes(q)); }
-    res.json({ data: pts, total: pts.length });
+const PROJ = { projection: { _id: 0 } };
+
+// GET /api/map-points
+router.get('/', async (req, res, next) => {
+    try {
+        const { category, search } = req.query;
+        const db = await getDB();
+        let pts = await db.collection('map_points').find({}, PROJ).toArray();
+        if (category) pts = pts.filter(p => p.category === category);
+        if (search) {
+            const q = search.toLowerCase();
+            pts = pts.filter(p => p.name.toLowerCase().includes(q));
+        }
+        res.json({ data: pts, total: pts.length });
+    } catch (err) { next(err); }
 });
 
-router.get('/:id', (req, res) => {
-    const db = loadDB();
-    const p = db.map_points.find(x => x.id === req.params.id);
-    if (!p) return res.status(404).json({ error: true, message: 'Ponto não encontrado.' });
-    res.json({ data: p });
+// GET /api/map-points/:id
+router.get('/:id', async (req, res, next) => {
+    try {
+        const db = await getDB();
+        const pt = await db.collection('map_points').findOne({ id: req.params.id }, PROJ);
+        if (!pt) return res.status(404).json({ error: true, message: 'Ponto não encontrado.' });
+        res.json({ data: pt });
+    } catch (err) { next(err); }
 });
 
-router.post('/', (req, res) => {
-    const { name, category, latitude, longitude, address, phone, opening_hours } = req.body;
-    if (!name || !category || latitude == null || longitude == null) {
-        return res.status(400).json({ error: true, message: 'Campos obrigatórios: name, category, latitude, longitude.' });
-    }
-    const db = loadDB();
-    const now = new Date().toISOString();
-    const pt = { id: generateNumericId(db), name, category, latitude: parseFloat(latitude), longitude: parseFloat(longitude), address: address || null, phone: phone || null, opening_hours: opening_hours || null, created_at: now, updated_at: now };
-    db.map_points.push(pt);
-    saveDB(db);
-    res.status(201).json({ data: pt });
+// POST /api/map-points
+router.post('/', async (req, res, next) => {
+    try {
+        const { name, category, latitude, longitude, address, phone, opening_hours } = req.body;
+        if (!name || !category || latitude == null || longitude == null) {
+            return res.status(400).json({ error: true, message: 'Campos obrigatórios: name, category, latitude, longitude.' });
+        }
+        const db = await getDB();
+        const col = db.collection('map_points');
+        const now = new Date().toISOString();
+        const pt = {
+            id: await generateNumericId(col),
+            name, category,
+            latitude: parseFloat(latitude), longitude: parseFloat(longitude),
+            address: address || null, phone: phone || null,
+            opening_hours: opening_hours || null,
+            created_at: now, updated_at: now
+        };
+        await col.insertOne(pt);
+        const { _id, ...response } = pt;
+        res.status(201).json({ data: response });
+    } catch (err) { next(err); }
 });
 
-router.put('/:id', (req, res) => {
-    const db = loadDB();
-    const idx = db.map_points.findIndex(x => x.id === req.params.id);
-    if (idx === -1) return res.status(404).json({ error: true, message: 'Ponto não encontrado.' });
-    const e = db.map_points[idx];
-    const { name, category, latitude, longitude, address, phone, opening_hours } = req.body;
-    db.map_points[idx] = { ...e, name: name || e.name, category: category || e.category, latitude: latitude != null ? parseFloat(latitude) : e.latitude, longitude: longitude != null ? parseFloat(longitude) : e.longitude, address: address !== undefined ? address : e.address, phone: phone !== undefined ? phone : e.phone, opening_hours: opening_hours !== undefined ? opening_hours : e.opening_hours, updated_at: new Date().toISOString() };
-    saveDB(db);
-    res.json({ data: db.map_points[idx] });
+// PUT /api/map-points/:id
+router.put('/:id', async (req, res, next) => {
+    try {
+        const db = await getDB();
+        const col = db.collection('map_points');
+        const existing = await col.findOne({ id: req.params.id }, PROJ);
+        if (!existing) return res.status(404).json({ error: true, message: 'Ponto não encontrado.' });
+        const { name, category, latitude, longitude, address, phone, opening_hours } = req.body;
+        const updated = {
+            ...existing,
+            name:          name          || existing.name,
+            category:      category      || existing.category,
+            latitude:      latitude      != null ? parseFloat(latitude)  : existing.latitude,
+            longitude:     longitude     != null ? parseFloat(longitude) : existing.longitude,
+            address:       address       !== undefined ? address       : existing.address,
+            phone:         phone         !== undefined ? phone         : existing.phone,
+            opening_hours: opening_hours !== undefined ? opening_hours : existing.opening_hours,
+            updated_at: new Date().toISOString()
+        };
+        await col.updateOne({ id: req.params.id }, { $set: updated });
+        res.json({ data: updated });
+    } catch (err) { next(err); }
 });
 
-router.delete('/:id', (req, res) => {
-    const db = loadDB();
-    const idx = db.map_points.findIndex(x => x.id === req.params.id);
-    if (idx === -1) return res.status(404).json({ error: true, message: 'Ponto não encontrado.' });
-    db.map_points.splice(idx, 1);
-    saveDB(db);
-    res.json({ message: 'Ponto excluído com sucesso.' });
+// DELETE /api/map-points/:id
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const db = await getDB();
+        const result = await db.collection('map_points').deleteOne({ id: req.params.id });
+        if (result.deletedCount === 0) return res.status(404).json({ error: true, message: 'Ponto não encontrado.' });
+        res.json({ message: 'Ponto excluído com sucesso.' });
+    } catch (err) { next(err); }
 });
 
 module.exports = router;

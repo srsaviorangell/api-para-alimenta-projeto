@@ -1,40 +1,36 @@
 /**
- * Pure-JS JSON file database adapter.
- * Replaces better-sqlite3 to avoid native compilation on Windows.
- * Uses synchronous reads/writes for simplicity.
+ * MongoDB Atlas adapter.
+ * Substitui o adaptador de arquivo JSON.
+ * Conexão singleton reutilizada em toda a aplicação.
  */
-const fs = require('fs');
-const path = require('path');
+const { MongoClient } = require('mongodb');
 
-const DB_PATH = path.join(__dirname, '../../sj2026.json');
+const uri = process.env.MONGODB_URI;
+if (!uri) throw new Error('MONGODB_URI não definida no .env');
 
-function loadDB() {
-    if (!fs.existsSync(DB_PATH)) {
-        const initial = { events: [], venues: [], map_points: [], useful_info: [] };
-        fs.writeFileSync(DB_PATH, JSON.stringify(initial, null, 2), 'utf8');
-        return initial;
-    }
-    return JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+let _db = null;
+
+async function getDB() {
+    if (_db) return _db;
+    const client = new MongoClient(uri, { serverSelectionTimeoutMS: 10000 });
+    await client.connect();
+    _db = client.db('sj2026');
+    console.log('✅ Conectado ao MongoDB Atlas');
+    return _db;
 }
 
-function saveDB(data) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf8');
-}
-
-function generateNumericId(db) {
+/**
+ * Gera um ID numérico sequencial dentro de uma coleção.
+ * @param {import('mongodb').Collection} collection
+ */
+async function generateNumericId(collection) {
+    const docs = await collection.find({}, { projection: { id: 1, _id: 0 } }).toArray();
     let maxId = 0;
-    // Check all main collections for the highest numeric ID
-    ['events', 'venues', 'stages', 'map_points', 'useful_info'].forEach(coll => {
-        if (Array.isArray(db[coll])) {
-            db[coll].forEach(item => {
-                const num = parseInt(item.id, 10);
-                if (!isNaN(num) && num > maxId) {
-                    maxId = num;
-                }
-            });
-        }
+    docs.forEach(doc => {
+        const n = parseInt(doc.id, 10);
+        if (!isNaN(n) && n > maxId) maxId = n;
     });
-    return (maxId + 1).toString();
+    return String(maxId + 1);
 }
 
-module.exports = { loadDB, saveDB, generateNumericId };
+module.exports = { getDB, generateNumericId };
